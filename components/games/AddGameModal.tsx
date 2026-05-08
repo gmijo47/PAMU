@@ -1,4 +1,11 @@
-import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+    Modal,
+    Pressable,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+} from "react-native";
 
 type AddGameModalProps = {
   visible: boolean;
@@ -138,4 +145,3 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-

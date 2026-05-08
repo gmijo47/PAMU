@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import GameActionButton from "@/components/game-one/GameActionButton";
 import NumberDisplay from "@/components/game-one/NumberDisplay";
 import SumAnswerInput from "@/components/game-one/SumAnswerInput";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function GameOneScreen() {
   const [numbers, setNumbers] = useState<number[]>([]);

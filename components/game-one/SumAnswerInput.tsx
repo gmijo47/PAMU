@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
 type SumAnswerInputProps = {
   value: string;

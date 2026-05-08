@@ -1,19 +1,25 @@
-import { useEffect, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { useRouter } from "expo-router";
-import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import AddGameModal from "@/components/games/AddGameModal";
 import GameCard from "@/components/games/GameCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { firestore } from "@/firebase";
 import type { Game } from "@/types/game";
+import { useRouter } from "expo-router";
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDocs,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
+import {
+    Alert,
+    FlatList,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
 
 export default function GamesScreen() {
   const { isLoggedIn } = useAuth();
@@ -48,22 +54,26 @@ export default function GamesScreen() {
   }, []);
 
   const handleDeleteGame = (id: string) => {
-    Alert.alert("Brisanje igre", "Jeste li sigurni da želite obrisati ovu igru?", [
-      { text: "Odustani", style: "cancel" },
-      {
-        text: "Obriši",
-        style: "destructive",
-        onPress: async () => {
-          try {
-            await deleteDoc(doc(firestore, "games", id));
-            setGames((prev) => prev.filter((g) => g.id !== id));
-          } catch (error) {
-            console.error("Error deleting game:", error);
-            Alert.alert("Greška", "Došlo je do greške pri brisanju igre.");
-          }
+    Alert.alert(
+      "Brisanje igre",
+      "Jeste li sigurni da želite obrisati ovu igru?",
+      [
+        { text: "Odustani", style: "cancel" },
+        {
+          text: "Obriši",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteDoc(doc(firestore, "games", id));
+              setGames((prev) => prev.filter((g) => g.id !== id));
+            } catch (error) {
+              console.error("Error deleting game:", error);
+              Alert.alert("Greška", "Došlo je do greške pri brisanju igre.");
+            }
+          },
         },
-      },
-    ]);
+      ],
+    );
   };
 
   const resetForm = () => {
@@ -80,7 +90,10 @@ export default function GamesScreen() {
     }
 
     if (!isLoggedIn) {
-      Alert.alert("Prijava je potrebna", "Za dodavanje nove igre prvo se prijavite u Auth tabu.");
+      Alert.alert(
+        "Prijava je potrebna",
+        "Za dodavanje nove igre prvo se prijavite u Auth tabu.",
+      );
       return;
     }
 
@@ -121,7 +134,9 @@ export default function GamesScreen() {
           <Pressable onPress={() => router.push(item.route as any)}>
             <GameCard
               game={item}
-              onDelete={isLoggedIn ? () => handleDeleteGame(item.id) : undefined}
+              onDelete={
+                isLoggedIn ? () => handleDeleteGame(item.id) : undefined
+              }
             />
           </Pressable>
         )}
@@ -180,4 +195,3 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
 });
-
