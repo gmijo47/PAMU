@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import AuthInput from "./AuthInput";
 import AuthButton from "./AuthButton";
 import ErrorMessage from "./ErrorMessage";
@@ -44,6 +45,11 @@ export default function LoggedOutView() {
 
                 <ErrorMessage message={errorMessage} />
                 <AuthButton title="Prijava" onPress={handleLogin} />
+                <AuthButton
+                    title="Nemaš nalog? Registruj se"
+                    onPress={() => router.push("/register")}
+                    variant="secondary"
+                />
             </View>
         </View>
     );

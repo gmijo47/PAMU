@@ -1,7 +1,12 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import type { Game } from "@/types/game";
 
-export default function GameCard({ game }: { game: Game }) {
+type Props = {
+  game: Game;
+  onDelete?: () => void;
+};
+
+export default function GameCard({ game, onDelete }: Props) {
   return (
     <View style={styles.card}>
       <Image source={{ uri: game.imageUrl }} style={styles.image} />
@@ -9,6 +14,11 @@ export default function GameCard({ game }: { game: Game }) {
         <Text style={styles.title}>{game.title}</Text>
         <Text style={styles.description}>{game.description}</Text>
       </View>
+      {onDelete && (
+        <Pressable style={styles.deleteButton} onPress={onDelete}>
+          <Text style={styles.deleteButtonText}>Obriši</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -43,6 +53,18 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
     color: "#4b5563",
+  },
+  deleteButton: {
+    marginLeft: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: "#ef4444",
+    borderRadius: 8,
+  },
+  deleteButtonText: {
+    color: "#ffffff",
+    fontWeight: "600",
+    fontSize: 13,
   },
 });
 

@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import {
+  createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
@@ -20,6 +21,7 @@ type AuthContextType = {
   authReady: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,6 +47,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signOut(auth);
   };
 
+  const register = async (email: string, password: string) => {
+    await createUserWithEmailAndPassword(auth, email, password);
+  };
+
   const value = useMemo(
     () => ({
       user,
@@ -52,6 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       authReady,
       login,
       logout,
+      register,
     }),
     [user, authReady]
   );
