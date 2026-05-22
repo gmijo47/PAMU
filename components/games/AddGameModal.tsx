@@ -13,10 +13,11 @@ type AddGameModalProps = {
   description: string;
   imageUrl: string;
   route: string;
+  uploadingImage: boolean;
   onChangeTitle: (value: string) => void;
   onChangeDescription: (value: string) => void;
-  onChangeImageUrl: (value: string) => void;
   onChangeRoute: (value: string) => void;
+  onPickImage: () => void;
   onClose: () => void;
   onSubmit: () => void;
 };
@@ -27,10 +28,11 @@ export default function AddGameModal({
   description,
   imageUrl,
   route,
+  uploadingImage,
   onChangeTitle,
   onChangeDescription,
-  onChangeImageUrl,
   onChangeRoute,
+  onPickImage,
   onClose,
   onSubmit,
 }: AddGameModalProps) {
@@ -55,13 +57,25 @@ export default function AddGameModal({
             multiline
           />
 
-          <TextInput
-            placeholder="URL slike"
-            value={imageUrl}
-            onChangeText={onChangeImageUrl}
-            style={styles.input}
-            autoCapitalize="none"
-          />
+          <Pressable
+            style={styles.imageButton}
+            onPress={onPickImage}
+            disabled={uploadingImage}
+          >
+            <Text style={styles.imageButtonText}>
+              {uploadingImage
+                ? "Upload u tijeku..."
+                : "Odaberi i upload-aj sliku"}
+            </Text>
+          </Pressable>
+
+          {imageUrl ? (
+            <Text style={styles.imageStatus}>
+              Slika je odabrana i uploadana.
+            </Text>
+          ) : (
+            <Text style={styles.imageHint}>Slika još nije odabrana.</Text>
+          )}
 
           <TextInput
             placeholder="Route igre, npr. /game-one"
@@ -143,5 +157,26 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     color: "#111827",
     fontWeight: "600",
+  },
+  imageButton: {
+    backgroundColor: "#dbeafe",
+    borderWidth: 1,
+    borderColor: "#93c5fd",
+    paddingVertical: 13,
+    borderRadius: 12,
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  imageButtonText: {
+    color: "#1d4ed8",
+    fontWeight: "700",
+  },
+  imageStatus: {
+    color: "#15803d",
+    marginBottom: 12,
+  },
+  imageHint: {
+    color: "#6b7280",
+    marginBottom: 12,
   },
 });

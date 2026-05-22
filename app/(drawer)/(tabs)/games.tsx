@@ -2,23 +2,24 @@ import AddGameModal from "@/components/games/AddGameModal";
 import GameCard from "@/components/games/GameCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { firestore } from "@/firebase";
+import { pickAndUploadGameImage } from "@/services/uploadGameImage";
 import type { Game } from "@/types/game";
 import { useRouter } from "expo-router";
 import {
-    addDoc,
-    collection,
-    deleteDoc,
-    doc,
-    getDocs,
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
-    Alert,
-    FlatList,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  Alert,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 
 export default function GamesScreen() {
@@ -31,6 +32,7 @@ export default function GamesScreen() {
   const [gameDescription, setGameDescription] = useState("");
   const [gameImageUrl, setGameImageUrl] = useState("");
   const [gameRoute, setGameRoute] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -81,6 +83,21 @@ export default function GamesScreen() {
     setGameDescription("");
     setGameImageUrl("");
     setGameRoute("");
+  };
+
+  const handlePickImage = async () => {
+    try {
+      setUploadingImage(true);
+      const publicUrl = await pickAndUploadGameImage();
+      if (publicUrl) {
+        setGameImageUrl(publicUrl);
+        Alert.alert("Uspjeh", "Slika je uploadana.");
+      }
+    } catch (error: any) {
+      Alert.alert("Greška", error.message ?? "Upload slike nije uspio.");
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleAddGame = async () => {
@@ -150,10 +167,11 @@ export default function GamesScreen() {
         description={gameDescription}
         imageUrl={gameImageUrl}
         route={gameRoute}
+        uploadingImage={uploadingImage}
         onChangeTitle={setGameTitle}
         onChangeDescription={setGameDescription}
-        onChangeImageUrl={setGameImageUrl}
         onChangeRoute={setGameRoute}
+        onPickImage={handlePickImage}
         onClose={() => setModalVisible(false)}
         onSubmit={handleAddGame}
       />
